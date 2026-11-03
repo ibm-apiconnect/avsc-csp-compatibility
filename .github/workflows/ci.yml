@@ -1,0 +1,56 @@
+name: CI
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    branches:
+      - master
+      - v5.x
+    paths-ignore:
+      - '**.md'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    strategy:
+      matrix:
+        node:
+          - '17'
+          - '16'
+          - '14'
+          - '12'
+          - '11'
+          - '10'
+          - '9'
+          - '8'
+          - '7'
+          - '6'
+          # - '5' Disabled due to bug in that version of npm.
+          - '4'
+          - '3'
+          - '2'
+          - '1.8'
+          - '1.0'
+          - '0.12'
+          - '0.11'
+    name: Test using node ${{ matrix.node }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install Node ${{ matrix.node }}
+        shell: bash -eo pipefail -l {0}
+        run: |
+          nvm install --default ${{ matrix.node }}
+          if [[ "${{ matrix.node }}" == 0.* ]]; then
+            npm config set strict-ssl false
+          fi
+          dirname "$(nvm which ${{ matrix.node }})" >> "$GITHUB_PATH"
+      - name: Install
+        run: |
+          npm i
+          node -e 'import(".").catch(() => {});' 2>/dev/null || npm i mocha@~7.1.0
+          node -e 'const a = {}; const b = {...a};' 2>/dev/null || npm i mocha@~3.5.3 tmp@~0.0.33
+      - name: Test
+        run: npm t

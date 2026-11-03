@@ -6,7 +6,7 @@
 // automatically. Either finish documenting the type signature or document why
 // `any` is appropriate.
 
-import * as stream from 'stream'; 
+import * as stream from 'stream';
 import { EventEmitter } from 'events';
 
 //"virtual" namespace (no JS, just types) for Avro Schema
@@ -43,6 +43,7 @@ declare namespace schema {
     aliases?: string[];
     doc?: string;
     symbols: string[];
+    default?: string;
   }
 
   interface ArrayType {
@@ -135,6 +136,10 @@ interface SchemaOptions {
   noDeref: boolean;
 }
 
+interface CreateResolverOptions {
+  ignoreNamespaces: boolean;
+}
+
 declare class Resolver {
   //no public methods
 }
@@ -149,7 +154,7 @@ export function createBlobEncoder(schema: Schema, opts?: Partial<EncoderOptions>
 export function createBlobDecoder(blob: Blob, opts?: Partial<DecoderOptions>): streams.BlockDecoder;
 export function discoverProtocol(transport: Service.Transport, options: any, callback: Callback<any>): void;
 export function discoverProtocol(transport: Service.Transport, callback: Callback<any>): void;
-export function extractFileHeader(filePath: string, options?: any): void;
+export function extractFileHeader(filePath: string, options?: any): any;
 export function parse(schemaOrProtocolIdl: string, options?: any): any; // TODO protocol literal or Type
 export function readProtocol(protocolIdl: string, options?: Partial<DecoderOptions>): any;
 export function readSchema(schemaIdl: string, options?: Partial<DecoderOptions>): Schema;
@@ -160,7 +165,7 @@ export class Type {
   clone(val: any, opts?: Partial<CloneOptions>): any;
   compare(val1: any, val2: any): number;
   compareBuffers(buf1: Buffer, buf2: Buffer): number;
-  createResolver(type: Type): Resolver;
+  createResolver(type: Type, opts?: Partial<CreateResolverOptions>): Resolver;
   decode(buf: Buffer, pos?: number, resolver?: Resolver): { value: any, offset: number};
   encode(val: any, buf: Buffer, pos?: number): number;
   equals(type: Type): boolean;
@@ -239,7 +244,7 @@ export namespace Service {
     objectMode: boolean;
   }
 
-  
+
 
   type TransportFunctionCallback = (err: Error|null|undefined, res?: stream.Stream) => void;
   type TransportFunction = (cb: TransportFunctionCallback) => stream.Stream; // TODO
