@@ -1,5 +1,5 @@
 {
-  "name": "avsc",
+  "name": "avsc-csp-compatibility",
   "version": "1.0.0",
   "description": "Avro for JavaScript",
   "homepage": "https://github.com/mtth/avsc",
