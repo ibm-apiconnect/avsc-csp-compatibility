@@ -1,5 +1,5 @@
 {
-  "name": "avsc-csp-compatibility",
+  "name": "@ibmcloud/avsc-csp-compatibility",
   "version": "5.7.9-csp.1",
   "description": "Avro for JavaScript",
   "homepage": "https://github.com/ibm-apiconnect/avsc-csp-compatibility",
