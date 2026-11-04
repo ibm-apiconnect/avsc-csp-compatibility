@@ -2,7 +2,7 @@
   "name": "avsc-csp-compatibility",
   "version": "5.7.9-csp.1",
   "description": "Avro for JavaScript",
-  "homepage": "https://github.com/mtth/avsc",
+  "homepage": "https://github.com/ibm-apiconnect/avsc-csp-compatibility",
   "keywords": [
     "api",
     "avdl",
@@ -69,6 +69,6 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/mtth/avsc.git"
+    "url": "git://github.com/ibm-apiconnect/avsc-csp-compatibility.git"
   }
 }
