@@ -1,3 +1,27 @@
+## 🛠️ About This Fork
+
+This is a fork of [`avsc`](https://github.com/mtth/avsc) created to improve
+Content Security Policy (CSP) compliance for secure web environments.
+
+### 🚨 Why Fork?
+
+The original package builds its record constructors, checkers, readers,
+writers, resolvers, and RPC message handlers at runtime using dynamic code
+generation (`new Function()`), which is blocked under CSP unless
+`unsafe-eval` is allowed. This presents security concerns for browser-based
+applications that enforce strict CSP rules.
+
+### ✅ What Was Changed
+
++ 🔁 Replaced every use of `new Function()` in [`lib/types.js`](lib/types.js)
+  and [`lib/services.js`](lib/services.js) with plain closures.
++ 🧪 Added a `newSlowBuffer` helper in [`lib/utils.js`](lib/utils.js) (using
+  `Buffer.allocUnsafeSlow`, with a fallback to `SlowBuffer`) and explicit
+  `Buffer` imports, so buffers work consistently in browser bundles.
++ 🔒 Schema parsing, encoding, decoding, and schema resolution can now run in
+  environments with strict CSP.
+
+
 # Avsc [![NPM version](https://img.shields.io/npm/v/avsc.svg)](https://www.npmjs.com/package/avsc) [![Download count](https://img.shields.io/npm/dm/avsc.svg)](https://www.npmjs.com/package/avsc) [![CI](https://github.com/mtth/avsc/actions/workflows/ci.yml/badge.svg)](https://github.com/mtth/avsc/actions/workflows/ci.yml) [![Coverage status](https://coveralls.io/repos/mtth/avsc/badge.svg?branch=master&service=github)](https://coveralls.io/github/mtth/avsc?branch=master)
 
 Pure JavaScript implementation of the [Avro
@@ -17,7 +41,7 @@ specification](https://avro.apache.org/docs/current/spec.html).
 ## Installation
 
 ```sh
-$ npm install avsc
+$ npm install avsc-csp-compatibility
 ```
 
 `avsc` is compatible with all versions of [node.js][] since `0.11`.
@@ -37,7 +61,7 @@ $ npm install avsc
 Inside a node.js module, or using browserify:
 
 ```javascript
-const avro = require('avsc');
+const avro = require('avsc-csp-compatibility');
 ```
 
 + Encode and decode values from a known schema:
